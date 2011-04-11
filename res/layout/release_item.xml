@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:stretchColumns="1">
+  
+  <TableRow>
+  	<TextView android:layout_column="0"
+  			  android:text="Date:"
+  			  android:padding="3dip"/>
+  			  
+  	<TextView android:layout_width="wrap_content"
+  			  android:text="4/21/2011" 
+  			  android:layout_height="wrap_content" 
+  			  android:id="@+id/date"
+  			  android:layout_column="1"/>
+  			  
+ 	<TextView android:text="Gen:"
+ 			  android:gravity="right"
+ 			  android:padding="3dip"/>
+ 			  
+   	<TextView android:id="@+id/generators" android:text=""/>
+			  	
+  </TableRow>
+  
+  <TableRow>
+  	<TextView android:layout_column="0"
+  			  android:text="Time:"/>
+  			  
+ 	<TextView android:layout_column="1"
+ 			  android:text="1:00pm"
+ 			  android:id="@+id/time"/>
+  </TableRow>
+  
+</TableLayout>

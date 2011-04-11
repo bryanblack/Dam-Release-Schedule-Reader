@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dam Release Schedule Reader</string>
+    <string name="release_date_label">Release Date:</string>
+    <string name="time_period_label">Time Period:</string>
+    <string name="generators_label">Generators:</string>
+    <string name="no_releases">No Releases</string>
+</resources>
