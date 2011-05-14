@@ -5,4 +5,6 @@
     <string name="time_period_label">Time Period:</string>
     <string name="generators_label">Generators:</string>
     <string name="no_releases">No Releases</string>
+    <color name="date_label_bg">#555255</color>
+    <dimen name="date_label_font_size">30dp</dimen>
 </resources>

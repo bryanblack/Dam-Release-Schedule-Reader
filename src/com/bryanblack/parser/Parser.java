@@ -28,6 +28,7 @@ public abstract class Parser {
 	
 	public static final String RELEASE = "release"; 
 	public static final String LAKE = "lake"; 
+	public static final String RELEASE_DATE = "releaseDate"; 
 	
 	public Parser(){
 		mFactory = DocumentBuilderFactory.newInstance(); 
@@ -37,6 +38,25 @@ public abstract class Parser {
 	
 	public abstract String[] getLakes() throws SAXException, IOException, ParserConfigurationException; 
 	public abstract ArrayList<Release> getReleaseForLake(String url) throws MalformedURLException, SAXException, IOException, ParserConfigurationException;
+	
+	public Hashtable<String, ArrayList<Release>> groupByDate(ArrayList<Release> releases){
+		
+		if(releases.size() > 0) {
+			Hashtable<String, ArrayList<Release>> group = new Hashtable<String, ArrayList<Release>>(); 
+			
+			for(Release release : releases){
+				if(group.containsKey(release.getReleaseDate())){
+					group.get(release.getReleaseDate()).add(release); 
+				}else {
+					ArrayList<Release> newGroup = new ArrayList<Release>(); 
+					newGroup.add(release); 
+					group.put(release.getReleaseDate(), newGroup); 
+				}
+			}
+			return group; 
+		}
+		 return null; 
+	}
 	
 	protected static String[] toStringArray(ArrayList<String> list){
 		String[] stringArray = new String[list.size()]; 

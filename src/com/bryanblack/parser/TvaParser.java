@@ -116,6 +116,7 @@ public class TvaParser extends Parser {
 	}
 	
 	
+	
 	private String getXmlUrl(String url,boolean release){
 		String xmlUrl = ""; 
 		if(HTML_ROOT.length() <= url.length()){

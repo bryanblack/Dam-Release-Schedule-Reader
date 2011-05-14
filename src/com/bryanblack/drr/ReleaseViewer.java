@@ -5,6 +5,9 @@ package com.bryanblack.drr;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -21,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 /**
@@ -30,7 +34,9 @@ import android.widget.TextView;
 public class ReleaseViewer extends ListActivity {
 	
 	private TvaParser mParser; 
+	private Hashtable<String, ArrayList<Release>> mReleases; 
 	private String mReleaseUrl; 
+	private MergeAdapter mAdapter; 
 
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -51,9 +57,24 @@ public class ReleaseViewer extends ListActivity {
 	}
 	
 	private void populateReleases() throws SAXException, IOException, ParserConfigurationException{
-		ArrayList<Release> releases = mParser.getReleaseForLake(mReleaseUrl);
-		ReleaseAdapter adapter = new ReleaseAdapter(this, R.layout.release_item, releases); 
-		setListAdapter(adapter); 
+		mReleases = mParser.groupByDate(mParser.getReleaseForLake(mReleaseUrl));  
+		mAdapter = new MergeAdapter(); 
+		Enumeration<String> keys = mReleases.keys();
+		while(keys.hasMoreElements()){
+			String key = keys.nextElement(); 
+			mAdapter.addView(this.createDateLabel(key));
+			mAdapter.addAdapter(new ReleaseItemAdapter(this, R.layout.release_item, this.mReleases.get(key))); 
+		}	
+		setListAdapter(mAdapter); 
+	}
+	
+	private TextView createDateLabel(String date){
+		TextView dateLabel = new TextView(this); 
+		dateLabel.setBackgroundResource(R.color.date_label_bg); 
+		dateLabel.setTextSize(28);
+		dateLabel.setPadding(5, 2, 2, 5); 
+		dateLabel.setText(date); 
+		return dateLabel; 
 	}
 	
 
@@ -74,15 +95,16 @@ public class ReleaseViewer extends ListActivity {
 		// TODO Auto-generated method stub
 		super.onSaveInstanceState(outState);
 	}
+
 	
 	
-	private class ReleaseAdapter extends ArrayAdapter<Release> {
+	private class ReleaseItemAdapter extends ArrayAdapter<Release> {
 
 		private ArrayList<Release> mItems; 
 		
-		public ReleaseAdapter(Context context, int textViewResourceId, ArrayList<Release> objects) {
-			super(context, textViewResourceId, objects);
-			mItems = objects; 
+		public ReleaseItemAdapter(Context context, int textViewResourceId, ArrayList<Release> objects) {
+			super(context,textViewResourceId,objects); 
+			mItems = objects; 	
 		}
 		
 		@Override
@@ -95,25 +117,19 @@ public class ReleaseViewer extends ListActivity {
 	        
 	        Release release = mItems.get(position); 
 	        if(release != null){
-	        	TextView date = (TextView)v.findViewById(R.id.date); 
-	        	TextView time = (TextView)v.findViewById(R.id.time); 
-	        	TextView generators = (TextView)v.findViewById(R.id.generators); 
-	        	if(date != null){
-	        		date.setText(release.getReleaseDate());
+	        	TextView releaseTime = (TextView)v.findViewById(R.id.time); 
+	        	TextView generatorCount = (TextView)v.findViewById(R.id.generators); 
+	        	
+	        	if(releaseTime != null){
+	        		releaseTime.setText(release.getTimePeriod());
 	        	}
 	        	
-	        	if(time != null){
-	        		time.setText(release.getTimePeriod());
-	        	}
-	        	
-	        	if(generators != null){
-	        		generators.setText(release.getGenerators().toString()); 
+	        	if(generatorCount != null){
+	        		generatorCount.setText(release.getGenerators()); 
 	        	}
 	        	
 	        }
 	        return v;
 		}
 	}
-	
-
 }

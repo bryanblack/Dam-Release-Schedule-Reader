@@ -10,13 +10,18 @@ package com.bryanblack.drr;
 public final class R {
     public static final class attr {
     }
+    public static final class color {
+        public static final int date_label_bg=0x7f050000;
+    }
+    public static final class dimen {
+        public static final int date_label_font_size=0x7f060000;
+    }
     public static final class drawable {
         public static final int icon=0x7f020000;
     }
     public static final class id {
-        public static final int date=0x7f050000;
-        public static final int generators=0x7f050001;
-        public static final int time=0x7f050002;
+        public static final int generators=0x7f080001;
+        public static final int time=0x7f080000;
     }
     public static final class layout {
         public static final int lake_item=0x7f030000;
@@ -29,5 +34,8 @@ public final class R {
         public static final int no_releases=0x7f040004;
         public static final int release_date_label=0x7f040001;
         public static final int time_period_label=0x7f040002;
+    }
+    public static final class style {
+        public static final int ReleaseItem=0x7f070000;
     }
 }

@@ -3,13 +3,19 @@
  */
 package com.bryanblack.parser;
 
+import java.io.Serializable;
+
 
 /**
  * @author Bryan
  *
  */
-public abstract class Release {
+public abstract class Release implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	String mReleaseDate, mTimePeriod, mGenerators;
 
 	/**

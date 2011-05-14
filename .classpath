@@ -3,5 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry kind="lib" path="/Users/Bryan/Downloads/commonsguy-cwac-merge-d2559f6/libs/CWAC-SackOfViewsAdapter.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

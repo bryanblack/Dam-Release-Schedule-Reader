@@ -5,32 +5,14 @@
   android:layout_height="match_parent"
   android:stretchColumns="1">
   
-  <TableRow>
-  	<TextView android:layout_column="0"
-  			  android:text="Date:"
-  			  android:padding="3dip"/>
-  			  
-  	<TextView android:layout_width="wrap_content"
-  			  android:text="4/21/2011" 
-  			  android:layout_height="wrap_content" 
-  			  android:id="@+id/date"
+  <TableRow>  			  
+  	<TextView android:id="@+id/time"
+  			  style="@style/ReleaseItem"
   			  android:layout_column="1"/>
-  			  
- 	<TextView android:text="Gen:"
- 			  android:gravity="right"
- 			  android:padding="3dip"/>
  			  
-   	<TextView android:id="@+id/generators" android:text=""/>
-			  	
-  </TableRow>
-  
-  <TableRow>
-  	<TextView android:layout_column="0"
-  			  android:text="Time:"/>
-  			  
- 	<TextView android:layout_column="1"
- 			  android:text="1:00pm"
- 			  android:id="@+id/time"/>
-  </TableRow>
-  
+   	<TextView android:id="@+id/generators"
+   			  style="@style/ReleaseItem"
+   			  android:layout_column="2"/>
+
+  </TableRow>  
 </TableLayout>
