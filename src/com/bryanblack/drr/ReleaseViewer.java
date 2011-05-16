@@ -58,13 +58,15 @@ public class ReleaseViewer extends ListActivity {
 	
 	private void populateReleases() throws SAXException, IOException, ParserConfigurationException{
 		mReleases = mParser.groupByDate(mParser.getReleaseForLake(mReleaseUrl));  
-		mAdapter = new MergeAdapter(); 
-		Enumeration<String> keys = mReleases.keys();
-		while(keys.hasMoreElements()){
-			String key = keys.nextElement(); 
+		ArrayList<String> dates = new ArrayList<String>(mReleases.keySet()); 
+		Collections.sort(dates); 
+		mAdapter = new MergeAdapter();
+		for(int i = 0; i < dates.size(); i++){
+			String key = dates.get(i); 
 			mAdapter.addView(this.createDateLabel(key));
 			mAdapter.addAdapter(new ReleaseItemAdapter(this, R.layout.release_item, this.mReleases.get(key))); 
-		}	
+		}
+		
 		setListAdapter(mAdapter); 
 	}
 	
@@ -72,7 +74,7 @@ public class ReleaseViewer extends ListActivity {
 		TextView dateLabel = new TextView(this); 
 		dateLabel.setBackgroundResource(R.color.date_label_bg); 
 		dateLabel.setTextSize(28);
-		dateLabel.setPadding(5, 2, 2, 5); 
+		dateLabel.setPadding(5, 1, 1, 5); 
 		dateLabel.setText(date); 
 		return dateLabel; 
 	}
