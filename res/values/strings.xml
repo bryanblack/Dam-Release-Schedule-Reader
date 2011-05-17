@@ -7,4 +7,6 @@
     <string name="no_releases">No Releases</string>
     <color name="date_label_bg">#555255</color>
     <dimen name="date_label_font_size">30dp</dimen>
+    <string name="loading_message">Loading, please wait...</string>
+    <string name="release_loading_message">Loading Releases, please wait....</string>
 </resources>

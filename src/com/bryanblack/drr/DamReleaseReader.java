@@ -8,7 +8,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -24,19 +27,9 @@ public class DamReleaseReader extends ListActivity {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-		try {
-        	mParser = new TvaParser();
-        	super.onCreate(savedInstanceState);
-			setListAdapter(new ArrayAdapter<String>(this, R.layout.lake_item,mParser.getLakes()));
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		}catch(Exception e){
-			e.printStackTrace(); 
-		}
+    	mParser = new TvaParser();
+    	super.onCreate(savedInstanceState);
+    	new RetrieveLakesTask().execute(); 
 
 
         
@@ -58,6 +51,45 @@ public class DamReleaseReader extends ListActivity {
 			e.printStackTrace(); 
 		}
 	}
+	
+	
+	private class RetrieveLakesTask extends AsyncTask<Void,Void,String[]>{
+		private ProgressDialog dialog = new ProgressDialog(DamReleaseReader.this); 
+
+		protected void onPreExecute(){
+			dialog.setMessage(getString(R.string.loading_message)); 
+			dialog.show(); 
+		}
+		
+		protected void onPostExecute(String[] lakes){
+			DamReleaseReader.this.setListAdapter(new ArrayAdapter<String>(DamReleaseReader.this, R.layout.lake_item,lakes));
+			dialog.dismiss(); 
+		}
+
+
+		@Override
+		protected String[] doInBackground(Void... arg0) {
+			String[] lakes = null; 
+			try {
+				lakes = mParser.getLakes();
+			} catch (SAXException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParserConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return lakes;
+		}
+		
+		
+	}
+	
+	
+	
 }
 
 

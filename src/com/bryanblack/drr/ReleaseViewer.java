@@ -18,7 +18,9 @@ import com.bryanblack.parser.TvaParser;
 import com.bryanblack.parser.Release;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,15 +51,16 @@ public class ReleaseViewer extends ListActivity {
 			mParser = new TvaParser();
 			Bundle extras = getIntent().getExtras(); 
 			setTitle(extras.getString(Parser.LAKE)); 
-			mReleaseUrl = extras.getString(Parser.RELEASE); 
-			populateReleases(); 
+			mReleaseUrl = extras.getString(Parser.RELEASE);  
+			new RetrieveReleasesTask().execute(mReleaseUrl); 
 		}catch(Exception e){
 			e.printStackTrace(); 
 		}
 	}
 	
-	private void populateReleases() throws SAXException, IOException, ParserConfigurationException{
-		mReleases = mParser.groupByDate(mParser.getReleaseForLake(mReleaseUrl));  
+	@SuppressWarnings("unused")
+	private void populateReleases(ArrayList<Release> releases) throws SAXException, IOException, ParserConfigurationException{
+		mReleases = mParser.groupByDate(releases);  
 		ArrayList<String> dates = new ArrayList<String>(mReleases.keySet()); 
 		Collections.sort(dates); 
 		mAdapter = new MergeAdapter();
@@ -94,11 +97,52 @@ public class ReleaseViewer extends ListActivity {
 	 */
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		// TODO Auto-generated method stub
 		super.onSaveInstanceState(outState);
 	}
 
-	
+	private class RetrieveReleasesTask extends AsyncTask<String, Void, ArrayList<Release>>{
+		private ProgressDialog dialog = new ProgressDialog(ReleaseViewer.this); 
+		
+		protected void onPreExecute(){
+			dialog.setMessage(getString(R.string.release_loading_message)); 
+			dialog.show(); 
+		}
+		
+		protected void onPostExecute(ArrayList<Release> releases){
+			try {
+				populateReleases(releases);
+			} catch (SAXException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParserConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			dialog.dismiss(); 
+		}
+		
+		@Override
+		protected ArrayList<Release> doInBackground(String... url) {
+			ArrayList<Release> releases = null; 
+			try {
+				releases = mParser.getReleaseForLake(url[0]);
+			} catch (SAXException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParserConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return releases; 
+		}
+		
+	}
 	
 	private class ReleaseItemAdapter extends ArrayAdapter<Release> {
 
