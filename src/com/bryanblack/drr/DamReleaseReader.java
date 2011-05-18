@@ -62,7 +62,11 @@ public class DamReleaseReader extends ListActivity {
 		}
 		
 		protected void onPostExecute(String[] lakes){
-			DamReleaseReader.this.setListAdapter(new ArrayAdapter<String>(DamReleaseReader.this, R.layout.lake_item,lakes));
+			if(lakes != null){
+				DamReleaseReader.this.setListAdapter(new ArrayAdapter<String>(DamReleaseReader.this, R.layout.lake_item,lakes));	
+			}else{
+				DamReleaseReader.this.setListAdapter(new ArrayAdapter<String>(DamReleaseReader.this, R.layout.lake_item)); 
+			}
 			dialog.dismiss(); 
 		}
 

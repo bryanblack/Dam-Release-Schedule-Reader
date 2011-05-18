@@ -58,18 +58,18 @@ public class ReleaseViewer extends ListActivity {
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	private void populateReleases(ArrayList<Release> releases) throws SAXException, IOException, ParserConfigurationException{
-		mReleases = mParser.groupByDate(releases);  
-		ArrayList<String> dates = new ArrayList<String>(mReleases.keySet()); 
-		Collections.sort(dates); 
 		mAdapter = new MergeAdapter();
-		for(int i = 0; i < dates.size(); i++){
-			String key = dates.get(i); 
-			mAdapter.addView(this.createDateLabel(key));
-			mAdapter.addAdapter(new ReleaseItemAdapter(this, R.layout.release_item, this.mReleases.get(key))); 
+		if(releases != null){
+			mReleases = mParser.groupByDate(releases);  
+			ArrayList<String> dates = new ArrayList<String>(mReleases.keySet()); 
+			Collections.sort(dates); 
+			for(int i = 0; i < dates.size(); i++){
+				String key = dates.get(i); 
+				mAdapter.addView(this.createDateLabel(key));
+				mAdapter.addAdapter(new ReleaseItemAdapter(this, R.layout.release_item, this.mReleases.get(key))); 
+			}
 		}
-		
 		setListAdapter(mAdapter); 
 	}
 	
